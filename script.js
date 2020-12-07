@@ -1,5 +1,7 @@
 var colorCodes = ["FF3C33", "33A2FF", "33FF52", "DA33FF","33F6FF","FF33A8","33FFCA","FFFC33","E9FF33","D4FF33"];
-var algorithms =["fcfs","sjf","priority","robin"]
+var algorithms =["fcfs","sjf","priority","robin"];
+var proccessPause= false;
+
 recalculateServiceTime();
 $('.priority-only').hide();
 
@@ -27,7 +29,6 @@ $(document).ready(function () {
     showAlgorthimDescription();
     recalculateServiceTime();
   });
-  showAlgorthimDescription();
   updateProcessColor();
 });
 
@@ -251,19 +252,41 @@ function animate() {
   
   console.log($('#resultTable').width());
   var distance = $("#curtain").css("width");
-  
+  $("#goButton").hide();
+  $("#pauseButton").show();
   animationStep(sum, 0);
   jQuery('#curtain').animate({ width: '0', marginLeft: distance}, sum*1000/2, 'linear');
+}
+
+function animationPause(){
+  proccessPause = true;
+  $("#pauseButton").hide();
+  $("#startButton").show();
+  jQuery('#curtain').pause();
+}
+
+function animationStart(){
+  proccessPause= false;
+  $("#pauseButton").show();
+  $("#startButton").hide();
+  jQuery('#curtain').resume();
 }
 
 function animationStep(steps, cur) {
 	$('#timer').html(cur);
 	if(cur < steps) {
 		setTimeout(function(){ 
-   	     animationStep(steps, cur + 1);
+        if(!proccessPause){
+          animationStep(steps, cur + 1);
+        }
+   	    else{
+          animationStep(steps, cur);
+        }
   	}, 500);
   }
   else {
+    $("#goButton").show();
+    $("#pauseButton").hide();
   }
 }
 
@@ -272,6 +295,7 @@ function getAlgorithm(){
 }
 
 function draw() {
+
   $('fresh').html('');
   var inputTable = $('#inputTable tr');
   var th = '';

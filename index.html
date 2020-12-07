@@ -25,7 +25,7 @@
             <li>Poor in performance as average wait time is high.</li>
           </ul>
         </div>
-        <div id="sjf">
+        <div id="sjf"  style="display: none;">
           <h2>Shortest Job First (SJF)</h2>
           <ul class="list">
             <li>This is a non-preemptive, pre-emptive scheduling algorithm</li>
@@ -35,7 +35,7 @@
             <li>The processer should know in advance how much time process will take.</li>
             </ul>
         </div>
-        <div id="priority">
+        <div id="priority"  style="display: none;"> 
           <h2>Priority Based Scheduling</h2>
           <ul class="list">
             <li>Priority scheduling is a non-preemptive algorithm and one of the most common scheduling algorithms in batch systems.</li>
@@ -44,7 +44,7 @@
             <li>Priority can be decided based on memory requirements, time requirements or any other resource requirement.</li>
           </ul>
         </div>
-        <div id="robin">
+        <div id="robin"  style="display: none;">
           <h2>Round Robin Scheduling</h2>
           <ul class="list">
             <li>Round Robin is the preemptive process scheduling algorithm.</li>
@@ -65,14 +65,14 @@
           <tr>
               <td class="process">P0</td>
               <td>0</td>
-              <td><input class="initial exectime" type="text" value="5" /></td>
+              <td><input class="initial exectime" type="text" value="9" /></td>
               <td class="servtime"></td>
               <td class="priority-only initial"><input type="text"/></td>
           </tr>
           <tr>
               <td class="process">P1</td>
               <td>1</td>
-              <td><input class="initial exectime" value="3" /></td>
+              <td><input class="initial exectime" value="6" /></td>
               <td class="servtime"></td>
               <td class="priority-only" ><input type="text"/></td>
           </tr>
@@ -84,7 +84,9 @@
       <p id="quantumParagraph" hidden>Quantum: 
           <input style="width: 50px;" id="quantum" type="text" value="3" />
       </p>
-      <input type="button" value="Go" onclick="draw();" />
+      <input id="goButton" type="button" value="Go" onclick="draw();" />
+      <input id="startButton" type="button" value="Start" onclick="animationStart();" style="display: none;"/>
+      <input id="pauseButton" type="button" value="Pause" onclick="animationPause();" style="display: none;"/>
       <br/><br/>
 
       <fresh>
@@ -95,6 +97,8 @@
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="./script.js">
+  </script>
+  <script src="./pauseresume.js">
   </script>
 </body>
 </html>  
