@@ -1,0 +1,100 @@
+<html lang="en">
+  <head>
+    <link rel="stylesheet" media="all" href="./style.css">
+  </head>
+  <body>
+  <div>
+    <div>
+      Algorithm:
+      <select id="algorithm" name="algorithm">
+        <option value="fcfs">FCFS</option>
+        <option value="sjf">SJF</option>
+        <option value="priority">Priority scheduling</option>
+        <option value="robin">Round Robin</option>
+      </select>
+      <br>
+    </div>
+      <div>
+        <div id="fcfs" >
+          <h2>First Come First Serve (FCFS)</h2>
+          <ul class="list">
+            <li>Jobs are executed on first come, first serve basis.</li>
+            <li>It is a non-preemptive, pre-emptive scheduling algorithm.</li>
+            <li>Easy to understand and implement.</li>
+            <li>Its implementation is based on FIFO queue.</li>
+            <li>Poor in performance as average wait time is high.</li>
+          </ul>
+        </div>
+        <div id="sjf">
+          <h2>Shortest Job First (SJF)</h2>
+          <ul class="list">
+            <li>This is a non-preemptive, pre-emptive scheduling algorithm</li>
+            <li>Best approach to minimize waiting time.</li>
+            <li>Easy to implement in Batch systems where required CPU time is known in advance.</li>
+            <li>Impossible to implement in interactive systems where required CPU time is not known.</li>
+            <li>The processer should know in advance how much time process will take.</li>
+            </ul>
+        </div>
+        <div id="priority">
+          <h2>Priority Based Scheduling</h2>
+          <ul class="list">
+            <li>Priority scheduling is a non-preemptive algorithm and one of the most common scheduling algorithms in batch systems.</li>
+            <li>Each process is assigned a priority. Process with highest priority is to be executed first and so on.</li>
+            <li>Processes with same priority are executed on first come first served basis.</li>
+            <li>Priority can be decided based on memory requirements, time requirements or any other resource requirement.</li>
+          </ul>
+        </div>
+        <div id="robin">
+          <h2>Round Robin Scheduling</h2>
+          <ul class="list">
+            <li>Round Robin is the preemptive process scheduling algorithm.</li>
+            <li>Each process is provided a fix time to execute, it is called a <b>quantum</b>.</li>
+            <li>Once a process is executed for a given time period, it is preempted and other process executes for a given time period.</li>
+            <li>Context switching is used to save states of preempted processes.</li>
+          </ul>
+        </div>
+     </div>
+      <table id="inputTable">
+          <tr>
+              <th>Process</th>
+              <th>Arrival Time</th>
+              <th>Execute Time</th>
+              <th class="servtime">Service Time</th>
+              <th class="priority-only">Priority</th>
+          </tr>
+          <tr>
+              <td class="process">P0</td>
+              <td>0</td>
+              <td><input class="initial exectime" type="text" value="5" /></td>
+              <td class="servtime"></td>
+              <td class="priority-only initial"><input type="text"/></td>
+          </tr>
+          <tr>
+              <td class="process">P1</td>
+              <td>1</td>
+              <td><input class="initial exectime" value="3" /></td>
+              <td class="servtime"></td>
+              <td class="priority-only" ><input type="text"/></td>
+          </tr>
+      </table>
+      </div>
+      <input type="button" value="+" onclick="addRow();" />
+      <input id="minus" type="button" value="-" onclick="deleteRow();" />
+  <div>  
+      <p id="quantumParagraph" hidden>Quantum: 
+          <input style="width: 50px;" id="quantum" type="text" value="3" />
+      </p>
+      <input type="button" value="Go" onclick="draw();" />
+      <br/><br/>
+
+      <fresh>
+      </fresh>
+      <p>
+      Timer: <strong id="timer"></strong> sec
+      </p>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script src="./script.js">
+  </script>
+</body>
+</html>  
