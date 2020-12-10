@@ -11,6 +11,7 @@
         <option value="sjf">SJF</option>
         <option value="priority">Priority scheduling</option>
         <option value="robin">Round Robin</option>
+        <option value="all">Compare All</option>
       </select>
       <br>
     </div>
@@ -53,6 +54,15 @@
             <li>Context switching is used to save states of preempted processes.</li>
           </ul>
         </div>
+        <div id="all"  style="display: none;">
+          <h2>Compare all scheduling algorithm</h2>
+          <ul class="list">
+            <li>First Come First Serve (FCFS)</li>
+            <li>Shortest Job First (SJF)</b>.</li>
+            <li>Priority Based Scheduling</li>
+            <li>Round Robin</li>
+          </ul>
+        </div>
      </div>
       <table id="inputTable">
           <tr>
@@ -86,7 +96,7 @@
       </p>
       <input id="goButton" type="button" value="Go" onclick="draw();" />
       <input id="startButton" type="button" value="Start" onclick="animationStart();" style="display: none;"/>
-      <input id="pauseButton" type="button" value="Pause" onclick="animationPause();" style="display: none;"/>
+      <input id="pauseButton" type="button" value="Sleep" onclick="animationPause();" style="display: none;"/>
       <br/><br/>
 
       <fresh>

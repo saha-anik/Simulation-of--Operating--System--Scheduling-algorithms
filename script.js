@@ -1,5 +1,5 @@
 var colorCodes = ["FF3C33", "33A2FF", "33FF52", "DA33FF","33F6FF","FF33A8","33FFCA","FFFC33","E9FF33","D4FF33"];
-var algorithms =["fcfs","sjf","priority","robin"];
+var algorithms =["fcfs","sjf","priority","robin","all"];
 var proccessPause= false;
 
 recalculateServiceTime();
@@ -7,7 +7,7 @@ $('.priority-only').hide();
 
 $(document).ready(function () {
   $('#algorithm').change(function () {
-    if (this.value == 'priority') {
+    if (this.value == 'priority' || this.value == 'all') {
       $('.priority-only').show();
       $('.servtime').show();
       $('#minus').css('left', '604px');
@@ -18,7 +18,7 @@ $(document).ready(function () {
       $('#minus').css('left', '428px');
     }
 
-    if (this.value == 'robin') {
+    if (this.value == 'robin' || this.value == 'all') {
       $('.servtime').hide();
       $('#quantumParagraph').show();
     }
@@ -239,18 +239,23 @@ function findNextIndex(currentIndex, array) {
   return resultIndex;
 }
 
-function animate() {
-	$('fresh').prepend('<div id="curtain" style="position: absolute; right: 0; width:100%; height:100px;"></div>');
+function animate(compareCount) {
+	$('fresh').prepend('<div id="curtain" style="position: absolute; right: 0; width:100%; height:'+100*compareCount+'px;"></div>');
   
-  $('#curtain').width($('#resultTable').width());
-  $('#curtain').css({left: $('#resultTable').position().left});
+  var maxWidth=0;
+  for(var i=0; i< compareCount;i++){
+    var width= $('#resultTable'+i).width();
+    maxWidth= width>maxWidth? width: maxWidth;
+  }
+
+  $('#curtain').width(maxWidth);
+  $('#curtain').css({left: $('#resultTable'+(compareCount-1)).position().left});
   
   var sum = 0;
   $('.exectime').each(function() {
       sum += Number($(this).val());
   });
   
-  console.log($('#resultTable').width());
   var distance = $("#curtain").css("width");
   $("#goButton").hide();
   $("#pauseButton").show();
@@ -294,33 +299,57 @@ function getAlgorithm(){
   return $('#algorithm').val();
 }
 
+function addHtmlToResultTableHeaderCell(executeTime,color,processID){
+  return '<th style="height: 60px; width: ' + executeTime * 20 + 'px; background-color:'+color+'">P' + processID + '</th>';
+}
+
+function addHtmlToResultTableDataCell(executeTime){
+  return '<td>' + executeTime + '</td>'
+}
+
+function addHtmlToResultDiv(th,td,compareCount){
+
+  var resultTable= "resultTable" + compareCount;
+  if(compareCount>0){
+    $('fresh').append('<br><br>');
+  }
+
+  $('fresh').append('<table id="'
+                    +resultTable
+                    +'"><tr>'
+                    + th
+                    + '</tr><tr>'
+                    + td
+                    + '</tr></table>'
+                   );
+}
+
 function draw() {
 
   $('fresh').html('');
   var inputTable = $('#inputTable tr');
   var th = '';
   var td = '';
-
+  compareCount=0;
   var algorithm = getAlgorithm();
-  if (algorithm == "fcfs") {
+  if (algorithm == "fcfs" || algorithm=="all") {
+    th = '';
+    td = '';
     $.each(inputTable, function (key, value) {
       if (key == 0) return true;
       var color= colorCodes[(key - 1)%10];
       var executeTime = parseInt($(value.children[2]).children().first().val());
       if(executeTime>0){
-        th += '<th style="height: 60px; width: ' + executeTime * 20 + 'px; background-color:'+color+'">P' + (key - 1) + '</th>';
-        td += '<td>' + executeTime + '</td>';
+        th +=  addHtmlToResultTableHeaderCell(executeTime,color,(key - 1));
+        td += addHtmlToResultTableDataCell(executeTime);
       }
     });
-
-    $('fresh').html('<table id="resultTable"><tr>'
-                    + th
-                    + '</tr><tr>'
-                    + td
-                    + '</tr></table>'
-                   );
+    addHtmlToResultDiv(th,td,compareCount);
+    compareCount++;
   }
-  else if (algorithm == "sjf") {
+  if (algorithm == "sjf" || algorithm=="all") {
+    th = '';
+    td = '';
     var executeTimes = [];
 
     $.each(inputTable, function (key, value) {
@@ -338,19 +367,16 @@ function draw() {
     $.each(executeTimes, function (key, value) {
       var color= colorCodes[(value.P)%10];
       if(value.executeTime>0){
-        th += '<th style="height: 60px; width: ' + value.executeTime * 20 + 'px;background-color:'+color+'">P' + value.P + '</th>';
-        td += '<td>' + value.executeTime + '</td>';
+        th +=  addHtmlToResultTableHeaderCell(value.executeTime,color,value.P);
+        td += addHtmlToResultTableDataCell(value.executeTime);
       }
     });
-
-    $('fresh').html('<table id="resultTable"><tr>'
-                    + th
-                    + '</tr><tr>'
-                    + td
-                    + '</tr></table>'
-                   );
+    addHtmlToResultDiv(th,td,compareCount);
+    compareCount++;
   }
-  else if (algorithm == "priority") {
+  if (algorithm == "priority" || algorithm=="all") {
+    th = '';
+    td = '';
     var executeTimes = [];
 
     $.each(inputTable, function (key, value) {
@@ -369,19 +395,16 @@ function draw() {
     $.each(executeTimes, function (key, value) {
       var color= colorCodes[(value.P)%10];
       if(value.executeTime>0){
-        th += '<th style="height: 60px; width: ' + value.executeTime * 20 + 'px;background-color:'+color+'">P' + value.P + '</th>';
-        td += '<td>' + value.executeTime + '</td>';
+        th += addHtmlToResultTableHeaderCell(value.executeTime,color,value.P);
+        td += addHtmlToResultTableDataCell(value.executeTime);
       }
     });
-
-    $('fresh').html('<table id="resultTable" style="width: 70%"><tr>'
-                    + th
-                    + '</tr><tr>'
-                    + td
-                    + '</tr></table>'
-                   );
+    addHtmlToResultDiv(th,td,compareCount);
+    compareCount++;
   }
-  else if (algorithm == "robin") {
+  if (algorithm == "robin" || algorithm=="all") {
+    th = '';
+    td = '';
     var quantum = $('#quantum').val();
     var executeTimes = [];
 
@@ -397,19 +420,15 @@ function draw() {
       $.each(executeTimes, function (key, value) {
         if (value.executeTime > 0) {
           var color= colorCodes[(value.P)%10];
-          th += '<th style="height: 60px; width: ' + (value.executeTime > quantum ? quantum : value.executeTime) * 20 + 'px;background-color:'+color+'">P' + value.P + '</th>';
-          td += '<td>' + (value.executeTime > quantum ? quantum : value.executeTime) + '</td>';
+          th +=addHtmlToResultTableHeaderCell((value.executeTime > quantum ? quantum : value.executeTime),color,value.P);
+          td += addHtmlToResultTableDataCell(quantum);
           value.executeTime -= quantum;
           areWeThereYet = false;
         }
       });
     }
-    $('fresh').html('<table id="resultTable" style="width: 70%"><tr>'
-                    + th
-                    + '</tr><tr>'
-                    + td
-                    + '</tr></table>'
-                   );
+    addHtmlToResultDiv(th,td,compareCount);
+    compareCount++;
   }
-  animate();
+  animate(compareCount);
 }
