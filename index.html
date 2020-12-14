@@ -1,23 +1,26 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" media="all" href="./style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Andika+New+Basic&display=swap" rel="stylesheet">
   </head>
   <body>
-  <div>
-    <div>
-      Algorithm:
-      <select id="algorithm" name="algorithm">
-        <option value="fcfs">FCFS</option>
-        <option value="sjf">SJF</option>
-        <option value="priority">Priority scheduling</option>
-        <option value="robin">Round Robin</option>
-        <option value="all">Compare All</option>
-      </select>
-      <br>
-    </div>
+  <div class="container-div">
+    <div class="algorithm-div">
+      <div style="text-align: center;margin-top: 25px;">
+        Algorithm:
+        <select id="algorithm" name="algorithm">
+          <option value="fcfs">FCFS</option>
+          <option value="sjf">SJF</option>
+          <option value="priority">Priority scheduling</option>
+          <option value="robin">Round Robin</option>
+          <option value="all">Compare All</option>
+        </select>
+        <br>
+      </div>
       <div>
         <div id="fcfs" >
-          <h2>First Come First Serve (FCFS)</h2>
+          <h2 style="margin-bottom: 0;text-align: center;">First Come First Serve (FCFS)</h2>
           <ul class="list">
             <li>Jobs are executed on first come, first serve basis.</li>
             <li>It is a non-preemptive, pre-emptive scheduling algorithm.</li>
@@ -27,7 +30,7 @@
           </ul>
         </div>
         <div id="sjf"  style="display: none;">
-          <h2>Shortest Job First (SJF)</h2>
+          <h2 style="margin-bottom: 0;text-align: center;">Shortest Job First (SJF)</h2>
           <ul class="list">
             <li>This is a non-preemptive, pre-emptive scheduling algorithm</li>
             <li>Best approach to minimize waiting time.</li>
@@ -37,7 +40,7 @@
             </ul>
         </div>
         <div id="priority"  style="display: none;"> 
-          <h2>Priority Based Scheduling</h2>
+          <h2 style="margin-bottom: 0;text-align: center;">Priority Based Scheduling</h2>
           <ul class="list">
             <li>Priority scheduling is a non-preemptive algorithm and one of the most common scheduling algorithms in batch systems.</li>
             <li>Each process is assigned a priority. Process with highest priority is to be executed first and so on.</li>
@@ -46,7 +49,7 @@
           </ul>
         </div>
         <div id="robin"  style="display: none;">
-          <h2>Round Robin Scheduling</h2>
+          <h2 style="margin-bottom: 0;text-align: center;">Round Robin Scheduling</h2>
           <ul class="list">
             <li>Round Robin is the preemptive process scheduling algorithm.</li>
             <li>Each process is provided a fix time to execute, it is called a <b>quantum</b>.</li>
@@ -55,7 +58,7 @@
           </ul>
         </div>
         <div id="all"  style="display: none;">
-          <h2>Compare all scheduling algorithm</h2>
+          <h2 style="margin-bottom: 0;text-align: center;">Compare all scheduling algorithm</h2>
           <ul class="list">
             <li>First Come First Serve (FCFS)</li>
             <li>Shortest Job First (SJF)</b>.</li>
@@ -63,8 +66,8 @@
             <li>Round Robin</li>
           </ul>
         </div>
-     </div>
-      <table id="inputTable">
+      </div>
+      <table class="styled-table" id="inputTable">
           <tr>
               <th>Process</th>
               <th>Arrival Time</th>
@@ -82,28 +85,28 @@
           <tr>
               <td class="process">P1</td>
               <td>1</td>
-              <td><input class="initial exectime" value="6" /></td>
+              <td><input type="text" class="initial exectime" value="6" /></td>
               <td class="servtime"></td>
               <td class="priority-only" ><input type="text"/></td>
           </tr>
       </table>
-      </div>
-      <input type="button" value="+" onclick="addRow();" />
-      <input id="minus" type="button" value="-" onclick="deleteRow();" />
-  <div>  
+    <input type="button" value="Add New Process" onclick="addRow();" />
+    <input id="minus" type="button" value="Delete Last Process" onclick="deleteRow();" />
+    </div>
+    <div>  
       <p id="quantumParagraph" hidden>Quantum: 
           <input style="width: 50px;" id="quantum" type="text" value="3" />
       </p>
       <input id="goButton" type="button" value="Go" onclick="draw();" />
       <input id="startButton" type="button" value="Start" onclick="animationStart();" style="display: none;"/>
       <input id="pauseButton" type="button" value="Sleep" onclick="animationPause();" style="display: none;"/>
-      <br/><br/>
-
+      <br/>
       <fresh>
       </fresh>
       <p>
       Timer: <strong id="timer"></strong> sec
       </p>
+    </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="./script.js">

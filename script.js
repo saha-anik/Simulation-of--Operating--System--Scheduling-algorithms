@@ -240,7 +240,7 @@ function findNextIndex(currentIndex, array) {
 }
 
 function animate(compareCount) {
-	$('fresh').prepend('<div id="curtain" style="position: absolute; right: 0; width:100%; height:'+100*compareCount+'px;"></div>');
+	$('fresh').prepend('<div id="curtain" style="position: absolute; right: 0; width:100%; height:'+181*compareCount+'px;"></div>');
   
   var maxWidth=0;
   for(var i=0; i< compareCount;i++){
@@ -307,14 +307,17 @@ function addHtmlToResultTableDataCell(executeTime){
   return '<td>' + executeTime + '</td>'
 }
 
-function addHtmlToResultDiv(th,td,compareCount){
+function addHtmlToResultDiv(th,td,compareCount,methodName){
 
   var resultTable= "resultTable" + compareCount;
   if(compareCount>0){
-    $('fresh').append('<br><br>');
+    $('fresh').append('<br>');
   }
 
-  $('fresh').append('<table id="'
+  $('fresh').append('<h5>' 
+                    +methodName+
+                    '</h5>'
+                    +'<table id="'
                     +resultTable
                     +'"><tr>'
                     + th
@@ -344,7 +347,7 @@ function draw() {
         td += addHtmlToResultTableDataCell(executeTime);
       }
     });
-    addHtmlToResultDiv(th,td,compareCount);
+    addHtmlToResultDiv(th,td,compareCount, "First Come First Serve");
     compareCount++;
   }
   if (algorithm == "sjf" || algorithm=="all") {
@@ -371,7 +374,7 @@ function draw() {
         td += addHtmlToResultTableDataCell(value.executeTime);
       }
     });
-    addHtmlToResultDiv(th,td,compareCount);
+    addHtmlToResultDiv(th,td,compareCount,"Shortest Job First");
     compareCount++;
   }
   if (algorithm == "priority" || algorithm=="all") {
@@ -399,7 +402,7 @@ function draw() {
         td += addHtmlToResultTableDataCell(value.executeTime);
       }
     });
-    addHtmlToResultDiv(th,td,compareCount);
+    addHtmlToResultDiv(th,td,compareCount,"Priority");
     compareCount++;
   }
   if (algorithm == "robin" || algorithm=="all") {
@@ -427,7 +430,7 @@ function draw() {
         }
       });
     }
-    addHtmlToResultDiv(th,td,compareCount);
+    addHtmlToResultDiv(th,td,compareCount, "Round Robin");
     compareCount++;
   }
   animate(compareCount);
