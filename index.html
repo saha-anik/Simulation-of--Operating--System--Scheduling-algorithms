@@ -71,7 +71,8 @@
           <tr>
               <th>Process</th>
               <th>Arrival Time</th>
-              <th>Execute Time</th>
+              <th id="excuteTimePerSession">Execute Time Per Session</th>
+              <th id="excuteTimeAll" style="display: none;">Execute Time For All</th>
               <th class="servtime">Waiting Time</th>
               <th class="priority-only">Priority</th>
           </tr>
@@ -93,7 +94,13 @@
     <input type="button" value="Add New Process" onclick="addRow();" />
     <input id="minus" type="button" value="Delete Last Process" onclick="deleteRow();" />
     </div>
-    <div>  
+    <div>
+      <p id="periodParagraph">Period: 
+        <input style="width: 50px;" id="period" type="text" value="3" />
+      </p>  
+      <p id="totalTimeParagraph">Total Time: 
+        <input style="width: 50px;" id="totalTime" type="text" value="30" />
+      </p>
       <p id="quantumParagraph" hidden>Quantum: 
           <input style="width: 50px;" id="quantum" type="text" value="3" />
       </p>

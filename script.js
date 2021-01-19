@@ -21,10 +21,18 @@ $(document).ready(function () {
     if (this.value == 'robin' || this.value == 'all') {
       $('.servtime').hide();
       $('#quantumParagraph').show();
+      $('#excuteTimePerSession').hide();
+      $('#excuteTimeAll').show();
+      $('#periodParagraph').hide();
+      $('#totalTimeParagraph').hide();
     }
     else {
       $('#quantumParagraph').hide();
       $('.servtime').show();
+      $('#excuteTimePerSession').show();
+      $('#excuteTimeAll').hide();
+      $('#periodParagraph').show();
+      $('#totalTimeParagraph').show();
     }
     showAlgorthimDescription();
     recalculateServiceTime();
@@ -299,7 +307,10 @@ function getAlgorithm(){
   return $('#algorithm').val();
 }
 
-function addHtmlToResultTableHeaderCell(executeTime,color,processID){
+function addHtmlToResultTableHeaderCell(executeTime,color,processID,period){
+  if(period){
+    return '<th style="height: 60px; width: ' + executeTime * 20 + 'px; background-color:'+color+'">' + 'Period' + '</th>';
+  }
   return '<th style="height: 60px; width: ' + executeTime * 20 + 'px; background-color:'+color+'">P' + processID + '</th>';
 }
 
@@ -336,23 +347,43 @@ function draw() {
   compareCount=0;
   var algorithm = getAlgorithm();
   if (algorithm == "fcfs" || algorithm=="all") {
+    var period = $('#period').val();
+    var totalExectuteTime=$('#totalTime').val();
     th = '';
     td = '';
-    $.each(inputTable, function (key, value) {
-      if (key == 0) return true;
-      var color= colorCodes[(key - 1)%10];
-      var executeTime = parseInt($(value.children[2]).children().first().val());
-      if(executeTime>0){
-        th +=  addHtmlToResultTableHeaderCell(executeTime,color,(key - 1));
-        td += addHtmlToResultTableDataCell(executeTime);
+    while(totalExectuteTime>0){
+      $.each(inputTable, function (key, value) {
+        if (key == 0) return true;
+        var color= colorCodes[(key - 1)%10];
+        var executeTime = parseInt($(value.children[2]).children().first().val());
+        if(executeTime>0 && totalExectuteTime>executeTime){
+          th +=  addHtmlToResultTableHeaderCell(executeTime,color,(key - 1));
+          td += addHtmlToResultTableDataCell(executeTime);
+        }
+        if(totalExectuteTime>executeTime){
+          totalExectuteTime=totalExectuteTime-executeTime;
+        }
+      });
+      if(algorithm!="all"){
+        if(period>totalExectuteTime){
+          period=totalExectuteTime;
+        }
+        totalExectuteTime=totalExectuteTime-period;
+        th +=  addHtmlToResultTableHeaderCell(period,"ffffff",0,true);
+        td += addHtmlToResultTableDataCell(period);         
       }
-    });
+      else{
+        totalExectuteTime=0;
+      }
+    }
     addHtmlToResultDiv(th,td,compareCount, "First Come First Serve");
     compareCount++;
   }
   if (algorithm == "sjf" || algorithm=="all") {
     th = '';
     td = '';
+    var period = $('#period').val();
+    var totalExectuteTime=$('#totalTime').val();
     var executeTimes = [];
 
     $.each(inputTable, function (key, value) {
@@ -366,14 +397,29 @@ function draw() {
         return a.P - b.P;
       return a.executeTime - b.executeTime
     });
-
-    $.each(executeTimes, function (key, value) {
-      var color= colorCodes[(value.P)%10];
-      if(value.executeTime>0){
-        th +=  addHtmlToResultTableHeaderCell(value.executeTime,color,value.P);
-        td += addHtmlToResultTableDataCell(value.executeTime);
+    while(totalExectuteTime>0){
+      $.each(executeTimes, function (key, value) {
+        var color= colorCodes[(value.P)%10];
+        if(value.executeTime>0 && totalExectuteTime>value.executeTime){
+          th +=  addHtmlToResultTableHeaderCell(value.executeTime,color,value.P);
+          td += addHtmlToResultTableDataCell(value.executeTime);
+        }
+        if(totalExectuteTime>value.executeTime){
+          totalExectuteTime=totalExectuteTime-value.executeTime;
+        }
+      });
+      if(algorithm!="all"){
+        if(period>totalExectuteTime){
+          period=totalExectuteTime;
+        }
+        totalExectuteTime=totalExectuteTime-period;
+        th +=  addHtmlToResultTableHeaderCell(period,"ffffff",0,true);
+        td += addHtmlToResultTableDataCell(period);         
       }
-    });
+      else{
+        totalExectuteTime=0;
+      }
+    }
     addHtmlToResultDiv(th,td,compareCount,"Shortest Job First");
     compareCount++;
   }
@@ -381,7 +427,8 @@ function draw() {
     th = '';
     td = '';
     var executeTimes = [];
-
+    var period = $('#period').val();
+    var totalExectuteTime=$('#totalTime').val();
     $.each(inputTable, function (key, value) {
       if (key == 0) return true;
       var executeTime = parseInt($(value.children[2]).children().first().val());
@@ -394,14 +441,29 @@ function draw() {
         return a.P - b.P;
       return b.priority - a.priority
     });
-
-    $.each(executeTimes, function (key, value) {
-      var color= colorCodes[(value.P)%10];
-      if(value.executeTime>0){
-        th += addHtmlToResultTableHeaderCell(value.executeTime,color,value.P);
-        td += addHtmlToResultTableDataCell(value.executeTime);
+    while(totalExectuteTime>0){
+      $.each(executeTimes, function (key, value) {
+        var color= colorCodes[(value.P)%10];
+        if(value.executeTime>0 && totalExectuteTime>value.executeTime){
+          th += addHtmlToResultTableHeaderCell(value.executeTime,color,value.P);
+          td += addHtmlToResultTableDataCell(value.executeTime);
+        }
+        if(totalExectuteTime>value.executeTime){
+          totalExectuteTime=totalExectuteTime-value.executeTime;
+        }
+      });
+      if(algorithm!="all"){
+        if(period>totalExectuteTime){
+          period=totalExectuteTime;
+        }
+        totalExectuteTime=totalExectuteTime-period;
+        th +=  addHtmlToResultTableHeaderCell(period,"ffffff",0,true);
+        td += addHtmlToResultTableDataCell(period);         
       }
-    });
+      else{
+        totalExectuteTime=0;
+      }        
+    }
     addHtmlToResultDiv(th,td,compareCount,"Priority");
     compareCount++;
   }
